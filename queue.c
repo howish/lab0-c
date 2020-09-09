@@ -99,7 +99,7 @@ bool q_insert_tail(queue_t *q, char *s)
     
     newt = _list_ele_new(s);
     if (newt == NULL) return false;
-    if (q->size) q->tail->next = newt;
+    if (q->size) q->tail = (q->tail->next = newt);
     else q->head = q->tail = newt;
     q->size++;
     return true;
@@ -155,8 +155,9 @@ int q_size(queue_t *q)
 void q_reverse(queue_t *q)
 {
     if (!q || !q->size) return;
-
+    // Handle tail
     q->tail = q->head;
+    // Reverse linked list
     list_ele_t *pre = NULL; 
     list_ele_t *cur = q->head; 
     list_ele_t *nxt;
