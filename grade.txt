@@ -1,0 +1,85 @@
+scripts/driver.py -c
+# Test of insert_head and remove_head
+ERROR: Failed to store removed value
+ERROR: Failed to store removed value
+ERROR: Failed to store removed value
+# Test of insert_head, insert_tail, and remove_head
+ERROR: Failed to store removed value
+ERROR: Failed to store removed value
+ERROR: Failed to store removed value
+ERROR: Failed to store removed value
+ERROR: Failed to store removed value
+Error limit exceeded.  Stopping command execution
+# Test of insert_head, insert_tail, reverse, and remove_head
+Segmentation fault occurred.  You dereferenced a NULL or invalid pointer
+# Test of insert_head, insert_tail, size, and sort
+ERROR: Time limit exceeded.  Either you are in an infinite loop, or your code is too inefficient
+Segmentation fault occurred.  You dereferenced a NULL or invalid pointer
+# Test of insert_head, insert_tail, remove_head, reverse, size, and sort
+Segmentation fault occurred.  You dereferenced a NULL or invalid pointer
+# Test of truncated strings
+ERROR: Failed to store removed value
+Segmentation fault occurred.  You dereferenced a NULL or invalid pointer
+# Test operations on NULL queue
+Segmentation fault occurred.  You dereferenced a NULL or invalid pointer
+# Test operations on empty queue
+# Test remove_head with NULL argument
+Segmentation fault occurred.  You dereferenced a NULL or invalid pointer
+# Test of malloc failure on new
+Segmentation fault occurred.  You dereferenced a NULL or invalid pointer
+# Test of malloc failure on insert_head
+Segmentation fault occurred.  You dereferenced a NULL or invalid pointer
+# Test of malloc failure on insert_tail
+Segmentation fault occurred.  You dereferenced a NULL or invalid pointer
+# Test performance of insert_tail
+Segmentation fault occurred.  You dereferenced a NULL or invalid pointer
+# Test performance of size
+Segmentation fault occurred.  You dereferenced a NULL or invalid pointer
+# Test performance of insert_tail, size, reverse, and sort
+Segmentation fault occurred.  You dereferenced a NULL or invalid pointer
+# Test performance of sort with random and descending orders
+# 10000: all correct sorting algorithms are expected pass
+# 50000: sorting algorithms with O(n^2) time complexity are expected failed
+# 100000: sorting algorithms with O(nlogn) time complexity are expected pass
+ERROR: Time limit exceeded.  Either you are in an infinite loop, or your code is too inefficient
+Segmentation fault occurred.  You dereferenced a NULL or invalid pointer
+# Test if q_insert_tail and q_size is constant time complexity
+Testing insert_tail...(0/10)
+
+Segmentation fault occurred.  You dereferenced a NULL or invalid pointer
+---	Trace		Points
++++ TESTING trace trace-01-ops:
+[91m---	trace-01-ops	0/6[0m
++++ TESTING trace trace-02-ops:
+[91m---	trace-02-ops	0/6[0m
++++ TESTING trace trace-03-ops:
+[91m---	trace-03-ops	0/6[0m
++++ TESTING trace trace-04-ops:
+[91m---	trace-04-ops	0/6[0m
++++ TESTING trace trace-05-ops:
+[91m---	trace-05-ops	0/5[0m
++++ TESTING trace trace-06-string:
+[91m---	trace-06-string	0/6[0m
++++ TESTING trace trace-07-robust:
+[91m---	trace-07-robust	0/6[0m
++++ TESTING trace trace-08-robust:
+[92m---	trace-08-robust	6/6[0m
++++ TESTING trace trace-09-robust:
+[91m---	trace-09-robust	0/6[0m
++++ TESTING trace trace-10-malloc:
+[91m---	trace-10-malloc	0/6[0m
++++ TESTING trace trace-11-malloc:
+[91m---	trace-11-malloc	0/6[0m
++++ TESTING trace trace-12-malloc:
+[91m---	trace-12-malloc	0/6[0m
++++ TESTING trace trace-13-perf:
+[91m---	trace-13-perf	0/6[0m
++++ TESTING trace trace-14-perf:
+[91m---	trace-14-perf	0/6[0m
++++ TESTING trace trace-15-perf:
+[91m---	trace-15-perf	0/6[0m
++++ TESTING trace trace-16-perf:
+[91m---	trace-16-perf	0/6[0m
++++ TESTING trace trace-17-complexity:
+[91m---	trace-17-complexity	0/5[0m
+[91m---	TOTAL		6/100[0m
