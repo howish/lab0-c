@@ -175,40 +175,46 @@ void q_reverse(queue_t *q)
  * No effect if q is NULL or empty. In addition, if q has only one
  * element, do nothing.
  */
-static list_ele_t * _merge_two_list(list_ele_t *lst1, list_ele_t *lst2)
+static void _merge_two_list(
+    list_ele_t *lst1, list_ele_t *lst2,
+    list_ele_t **newhead, list_ele_t **newtail 
+)
 {
-    list_ele_t *newhead = NULL, *newtail = NULL, **ref;
+    list_ele_t **ref;
+    *newhead = *newtail = NULL; 
     while (lst1 || lst2)
     {
         ref = !lst1 ? &lst2
             : !lst2 ? &lst1
             : strcmp(lst1->value, lst2->value) <= 0
             ? &lst1 : &lst2;
-        if (!newhead) newhead = newtail = *ref;
+        if (!*newhead) *newhead = *newtail = *ref;
         else 
         {
-            newtail->next = *ref;
-            newtail = newtail->next;
+            (*newtail)->next = *ref;
+            (*newtail) = (*newtail)->next;
             *ref = (*ref)->next;
         }
     }
-    return newhead;
 }
 
 
-static list_ele_t * _merge_sort(list_ele_t *head, size_t len)
+static void _merge_sort(
+    list_ele_t *head, size_t len,
+    list_ele_t **newhead, list_ele_t **newtail
+)
 {
     if (len <= 1) return;
-    list_ele_t *prevmid, *mid = head;
+    list_ele_t *prevmid, *mid = head, *dummy;
     for (size_t i = 0; i < len / 2 - 1; i++) mid = mid->next;
     prevmid = mid;
     mid = mid->next;
     prevmid->next = NULL;
 
-    head = _merge_sort(head, len / 2);
-    mid = _merge_sort(mid, len - len / 2);
+    _merge_sort(head, len / 2, &head, &dummy);
+    _merge_sort(mid, len - len / 2, &mid, &dummy);
 
-    return _merge_two_list(head, mid);
+    _merge_two_list(head, mid, newhead, newtail);
 }
 
 void q_sort(queue_t *q)
@@ -216,5 +222,5 @@ void q_sort(queue_t *q)
     if (!q || !q->size) return;
 
     // Implement sorting by merge sort
-    _merge_sort(q->head, q->size);
+    _merge_sort(q->head, q->size, &q->head, &q->tail);
 }
