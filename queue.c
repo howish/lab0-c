@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "harness.h"
 #include "queue.h"
@@ -17,7 +18,7 @@ static list_ele_t *_list_ele_new(char const *s)
         free(new_ele);
         return NULL;
     }
-    strlcpy(new_ele->value, s, ssize);
+    strncpy(new_ele->value, s, ssize);
     new_ele->next = NULL;
     return new_ele;
 }
@@ -202,17 +203,28 @@ static void _quick_sort(queue_t *q)
     if (q->size <= 1)
         return;
     // Get pivot
-    queue_t piv = {q->head, q->head, 1};
-    list_ele_t *itr = q->head->next;
-    piv.head->next = NULL;
+    srand(time(NULL));
+    list_ele_t *piv_ele = q->head;
+    list_ele_t *itr;
+    int piv_idx = rand() % q->size;
+    if (piv_idx == 0)
+        itr = piv_ele->next;
+    else {
+        for (piv_idx--; piv_idx; piv_idx--, piv_ele = piv_ele->next)
+            ;
+        itr = piv_ele->next;
+        piv_ele->next = itr->next;
+        piv_ele = itr;
+        itr = q->head;
+    }
+    piv_ele->next = NULL;
+    queue_t piv = {piv_ele, piv_ele, 1};
 
     // Split
     queue_t les = {0}, mor = {0};
     queue_t *ref;
 
-    printf("Left:\n");
     while (itr) {
-        printf("%p\n", itr);
         int cmp = strcmp(itr->value, piv.head->value);
         ref = cmp == 0 ? &piv : cmp < 0 ? &les : &mor;
         if (ref->head == NULL) {
