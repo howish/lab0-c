@@ -181,7 +181,7 @@ void q_reverse(queue_t *q)
 
 /*
  * Merge sort on list node 
- * Implemet recursively 
+ * Implement recursively 
  */
 static void _merge_two_list(list_ele_t *lst1,
                             list_ele_t *lst2,
@@ -229,8 +229,8 @@ static void _merge_sort(list_ele_t *head,
     _merge_two_list(head, mid, newhead, newtail);
 }
 /*
- * Merge sort on list node 
- * Implemet recursively 
+ * Quick sort on list node 
+ * Implement recursively 
  */
 
 static void _quick_sort(queue_t *q)
