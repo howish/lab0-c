@@ -180,9 +180,8 @@ void q_reverse(queue_t *q)
 }
 
 /*
- * Sort elements of queue in ascending order
- * No effect if q is NULL or empty. In addition, if q has only one
- * element, do nothing.
+ * Merge sort on list node 
+ * Implemet recursively 
  */
 static void _merge_two_list(list_ele_t *lst1,
                             list_ele_t *lst2,
@@ -213,8 +212,10 @@ static void _merge_sort(list_ele_t *head,
                         list_ele_t **newhead,
                         list_ele_t **newtail)
 {
-    if (len <= 1)
+    if (len <= 1) {
+        *newhead = *newtail = head;
         return;
+    }
     list_ele_t *prevmid, *mid = head, *dummy;
     for (size_t i = 0; i < len / 2 - 1; i++)
         mid = mid->next;
@@ -227,6 +228,51 @@ static void _merge_sort(list_ele_t *head,
 
     _merge_two_list(head, mid, newhead, newtail);
 }
+/*
+ * Merge sort on list node 
+ * Implemet recursively 
+ */
+
+static void _quick_sort(queue_t *q)
+{
+    if (q->size <= 1) return;
+    // Get pivot
+    queue_t piv = {q->head, q->head, 1};
+    list_ele_t *itr = q->head->next;
+    piv.head->next = NULL;
+
+    // Split
+    queue_t les = {0}, mor = {0};
+    queue_t *ref;
+
+    while (itr) {
+        int cmp = strcmp(itr->value, piv.head->value);
+        ref = cmp == 0 ? &piv
+            : cmp < 0 ? &les : &mor; 
+        if (ref->head == NULL) {
+            ref->head = ref->tail = itr;
+        } else {
+            ref->tail->next = itr;
+            ref->tail = ref->tail->next;
+        }
+        itr = itr->next;
+        ref->tail->next = NULL; // Maybe not needed?
+        ref->size++;
+    }
+
+    _quick_sort(&les);
+    _quick_sort(&mor);
+    q->head = les.head;
+    les.tail->next = piv.head;
+    piv.tail->next = mor.head;
+    q->tail = mor.tail;
+}
+
+/*
+ * Sort elements of queue in ascending order
+ * No effect if q is NULL or empty. In addition, if q has only one
+ * element, do nothing.
+ */
 
 void q_sort(queue_t *q)
 {
@@ -235,4 +281,7 @@ void q_sort(queue_t *q)
 
     // Implement sorting by merge sort
     _merge_sort(q->head, q->size, &q->head, &q->tail);
+
+    // Implement sorting by quick sort
+    _quick_sort(q);
 }
