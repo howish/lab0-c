@@ -17,7 +17,7 @@ static list_ele_t *_list_ele_new(char const *s)
         free(new_ele);
         return NULL;
     }
-    strcpy(new_ele->value, s);
+    strncpy(new_ele->value, s, ssize);
     new_ele->next = NULL;
     return new_ele;
 }
@@ -97,9 +97,9 @@ bool q_insert_head(queue_t *q, char *s)
  */
 bool q_insert_tail(queue_t *q, char *s)
 {
-    list_ele_t *newt;
     if (q == NULL)
         return false;
+    list_ele_t *newt;
 
     newt = _list_ele_new(s);
     if (newt == NULL)
@@ -128,7 +128,7 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 
     // Copy Head content
     if (sp) {
-        strncpy(sp, q->head->value, bufsize - 1);
+        strncpy(sp, q->head->value, bufsize);
         sp[bufsize - 1] = '\0';
     }
     // Remove head
@@ -180,8 +180,8 @@ void q_reverse(queue_t *q)
 }
 
 /*
- * Merge sort on list node 
- * Implement recursively 
+ * Merge sort on list node
+ * Implement recursively
  */
 static void _merge_two_list(list_ele_t *lst1,
                             list_ele_t *lst2,
@@ -191,11 +191,8 @@ static void _merge_two_list(list_ele_t *lst1,
     *newhead = *newtail = NULL;
     while (lst1 != NULL || lst2 != NULL) {
         list_ele_t **ref;
-        ref = lst1 == NULL
-                  ? &lst2
-                  : lst2 == NULL
-                        ? &lst1
-                        : strcmp(lst1->value, lst2->value) <= 0 ? &lst1 : &lst2;
+        ref = !lst1 || (lst2 && strcmp(lst1->value, lst2->value) > 0) ? &lst2
+                                                                      : &lst1;
         if (*newhead == NULL)
             *newhead = *newtail = *ref;
         else {
@@ -228,45 +225,6 @@ static void _merge_sort(list_ele_t *head,
 
     _merge_two_list(head, mid, newhead, newtail);
 }
-/*
- * Quick sort on list node 
- * Implement recursively 
- */
-
-static void _quick_sort(queue_t *q)
-{
-    if (q->size <= 1) return;
-    // Get pivot
-    queue_t piv = {q->head, q->head, 1};
-    list_ele_t *itr = q->head->next;
-    piv.head->next = NULL;
-
-    // Split
-    queue_t les = {0}, mor = {0};
-    queue_t *ref;
-
-    while (itr) {
-        int cmp = strcmp(itr->value, piv.head->value);
-        ref = cmp == 0 ? &piv
-            : cmp < 0 ? &les : &mor; 
-        if (ref->head == NULL) {
-            ref->head = ref->tail = itr;
-        } else {
-            ref->tail->next = itr;
-            ref->tail = ref->tail->next;
-        }
-        itr = itr->next;
-        ref->tail->next = NULL; // Maybe not needed?
-        ref->size++;
-    }
-
-    _quick_sort(&les);
-    _quick_sort(&mor);
-    q->head = les.head;
-    les.tail->next = piv.head;
-    piv.tail->next = mor.head;
-    q->tail = mor.tail;
-}
 
 /*
  * Sort elements of queue in ascending order
@@ -281,7 +239,4 @@ void q_sort(queue_t *q)
 
     // Implement sorting by merge sort
     _merge_sort(q->head, q->size, &q->head, &q->tail);
-
-    // Implement sorting by quick sort
-    _quick_sort(q);
 }
